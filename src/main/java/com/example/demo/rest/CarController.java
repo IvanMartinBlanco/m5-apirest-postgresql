@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.domain.Car;
+import com.example.demo.dto.CarListDTO;
+import com.example.demo.dto.CountDTO;
 import com.example.demo.repository.CarRepository;
+import com.example.demo.service.CarService;
 
 @RestController
 @RequestMapping("/api")
@@ -24,24 +28,24 @@ public class CarController {
 	
 	private final Logger log = LoggerFactory.getLogger(CarController.class);
 	
-	private CarRepository carRepo;
+	private CarService carServ;
 	
-	public CarController(CarRepository carRepository) {
-		this.carRepo=carRepository;
+	public CarController(CarService carServ) {
+		this.carServ=carServ;
 	}
 	
 		@GetMapping("/cars")
 		public List<Car> findAll(){
 			log.info("REST request to find all cars");
 
-			return this.carRepo.findAll();
+			return this.carServ.findAll();
 		}
 		
 		
 		@GetMapping("/cars/{id}")
-		public ResponseEntity<Car> findOne(@PathVariable Long id){
+		public ResponseEntity<Car> findById(@PathVariable Long id){
 			log.info("REST request to find one car");
-			Optional<Car> carOpt=this.carRepo.findById(id);
+			Optional<Car> carOpt=this.carServ.findById(id);
 
 			if(carOpt.isPresent()) {
 				
@@ -49,6 +53,9 @@ public class CarController {
 			}
 			
 			return ResponseEntity.notFound().build();
+			
+			
+			//return carOpt.map(car -> ResponseEntity.ok(car)).orElseGet(()-> new ResponseEntity<>(HttpStatus.ACCEPTED));
 	
 		}
 		
@@ -60,7 +67,7 @@ public class CarController {
 				return ResponseEntity.badRequest().build();
 			}
 
-			car= this.carRepo.save(car);
+			car= this.carServ.save(car);
 			return ResponseEntity.ok(car);
 			
 		}
@@ -74,7 +81,7 @@ public class CarController {
 				return ResponseEntity.badRequest().build();
 			}
 			
-			car= this.carRepo.save(car);
+			car= this.carServ.save(car);
 			return ResponseEntity.ok(car);
 			
 		}
@@ -84,7 +91,7 @@ public class CarController {
 		public ResponseEntity<Void> delete(@PathVariable Long id){
 			log.info("REST request to delete a car");
 			
-			this.carRepo.deleteById(id);
+			this.carServ.delete(id);
 
 			return ResponseEntity.noContent().build();
 			
@@ -96,9 +103,36 @@ public class CarController {
 			log.info("REST request to delete all cars 2");
 			
 
-			this.carRepo.deleteAll();
+			this.carServ.deleteAll();
 			return ResponseEntity.noContent().build();
 			
+		}
+		
+		@PostMapping("/cars/deletemany")
+		public ResponseEntity<Car> deleteMany(@RequestBody CarListDTO carListDTO){
+			log.info("REST request to delete some cars");
+			
+			this.carServ.deleteAll(carListDTO.getCars());
+			
+			return ResponseEntity.noContent().build();
+			
+		}
+		
+//		@PostMapping("/cars/deletemany")
+//		public ResponseEntity<Car> deleteByProperties(@RequestBody CarListDTO carListDto){
+//			log.info("REST request to delete all cars 2");
+//			
+//
+//			this.carServ.deleteAll();
+//			return ResponseEntity.noContent().build();
+//			
+//		}
+		
+		@GetMapping("/cars/count")
+		public ResponseEntity<CountDTO> count(){
+			log.info("REST request to count all cars");
+			
+			return ResponseEntity.ok(new CountDTO(this.carServ.count()));
 		}
 		
 		
@@ -106,7 +140,7 @@ public class CarController {
 		public List<Car> findByDoors(@PathVariable Integer numDoors){
 			log.info("REST request to find cars by doors");
 			
-			return this.carRepo.findByNumDoors(numDoors);
+			return this.carServ.findByDoors(numDoors);
 		}
 }
 

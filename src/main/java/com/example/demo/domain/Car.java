@@ -19,6 +19,7 @@ public class Car {
 	private String manufacturer;
 	private String model;
 	private Double cc;
+	@Column(name="doors")
 	private Integer numDoors;
 	
 

@@ -9,6 +9,18 @@ public interface CarService {
 
 	List<Car> findAll();
 	
-	Optional<Car> findOne(Long id);
+	Optional<Car> findById(Long id);
+	
+	List<Car> findByDoors(Integer doors);
+	
+	Long count();
+	
+	Car save(Car car);
+	
+	void delete(Long id);
+	
+	void deleteAll();
+	
+	void deleteAll(List<Car> cars);
 	
 }
