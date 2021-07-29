@@ -22,6 +22,9 @@ import com.example.demo.dto.CountDTO;
 import com.example.demo.repository.CarRepository;
 import com.example.demo.service.CarService;
 
+import io.swagger.annotations.ApiOperation;
+import springfox.documentation.annotations.ApiIgnore;
+
 @RestController
 @RequestMapping("/api")
 public class CarController {
@@ -118,15 +121,15 @@ public class CarController {
 			
 		}
 		
-//		@PostMapping("/cars/deletemany")
-//		public ResponseEntity<Car> deleteByProperties(@RequestBody CarListDTO carListDto){
-//			log.info("REST request to delete all cars 2");
-//			
-//
-//			this.carServ.deleteAll();
-//			return ResponseEntity.noContent().build();
-//			
-//		}
+		@GetMapping("/cars/deletemany/ids={ids}")
+		public ResponseEntity<Car> deleteMany(@PathVariable List<Long> ids){
+			log.info("REST request to delete all cars 2");
+			
+
+			//this.carServ.deleteAllById(ids);
+			return ResponseEntity.noContent().build();
+			
+		}
 		
 		@GetMapping("/cars/count")
 		public ResponseEntity<CountDTO> count(){
@@ -137,6 +140,8 @@ public class CarController {
 		
 		
 		@GetMapping("/cars/doors/{numDoors}")
+		//@ApiIgnore //No aparecer en la documentación.
+		@ApiOperation("Buscar coches por número de puertas") //Cambiar la documentación.
 		public List<Car> findByDoors(@PathVariable Integer numDoors){
 			log.info("REST request to find cars by doors");
 			
