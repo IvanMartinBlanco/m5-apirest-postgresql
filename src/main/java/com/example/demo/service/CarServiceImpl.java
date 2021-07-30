@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -8,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
+
 
 import com.example.demo.domain.Car;
 import com.example.demo.repository.CarRepository;
@@ -129,6 +132,68 @@ try {
 		}
 		this.carRepository.deleteAllById(ids);
 		
+	}
+
+
+	@Override
+	public List<Car> findByManufacturerAndModel(String manufacturer, String model) {
+		log.warn("Finding by manufacturer and model");
+		if (!StringUtils.hasLength(model)) {
+			log.warn("Trying to find empty or null model");
+			return new ArrayList<>();
+		}
+		return this.carRepository.findByManufacturerAndModel(manufacturer, model);
+	}
+
+
+	@Override
+	public List<Car> findByManufacturerOrModel(String manufacturer, String model) {
+		log.warn("Finding by manufacturer or model");
+		if (!StringUtils.hasLength(model)) {
+			log.warn("Trying to find empty or null model");
+			return new ArrayList<>();
+		}
+		return this.carRepository.findByManufacturerOrModel(manufacturer, model);
+	}
+
+
+	@Override
+	public List<Car> findByNumDoorsGreaterThan(Integer doors) {
+		if(doors==null || doors==0) {
+			return new ArrayList<>();
+		}
+		return this.carRepository.findByNumDoorsGreaterThan(doors);
+	}
+
+
+	@Override
+	public List<Car> findByModelContaining(String model) {
+
+		return this.carRepository.findByModelContaining(model);
+	}
+
+
+	@Override
+	public List<Car> findByYearIn(List<Integer> years) {
+		return this.carRepository.findByYearIn(years);
+	}
+
+
+	@Override
+	public List<Car> findByReleaseDateBetween(LocalDate startDate, LocalDate endDate) {
+		return this.carRepository.findByReleaseDateBetween(startDate, endDate);
+	}
+
+
+	@Override
+	public List<Car> findByUnavailableFalse() {
+		return this.carRepository.findByUnavailableFalse();
+	}
+
+
+	@Override
+	public Long deleteAllByAvailableFalse() {
+		return this.carRepository.deleteAllByAvailableFalse();
 	}
 
 	

@@ -23,6 +23,7 @@ import com.example.demo.repository.CarRepository;
 import com.example.demo.service.CarService;
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
@@ -46,7 +47,7 @@ public class CarController {
 		
 		
 		@GetMapping("/cars/{id}")
-		public ResponseEntity<Car> findById(@PathVariable Long id){
+		public ResponseEntity<Car> findById(@ApiParam("Clave primaria car") @PathVariable Long id){
 			log.info("REST request to find one car");
 			Optional<Car> carOpt=this.carServ.findById(id);
 

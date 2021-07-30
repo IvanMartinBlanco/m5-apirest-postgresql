@@ -1,5 +1,7 @@
 package com.example.demo.domain;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,18 +26,24 @@ public class Car {
 	private Double cc;
 	@Column(name="doors")
 	private Integer numDoors;
+	private Integer year;
+	private LocalDate releaseDate;
+	private Boolean unavailable;
 	
 
 	public Car() {
 	}
 	
-	public Car(Long id, String manufacturer, String model, Double cc, Integer numDoors) {
+	public Car(Long id, String manufacturer, String model, Double cc, Integer numDoors, Integer year, LocalDate releaseDate, Boolean unavailable) {
 		super();
 		this.id = id;
 		this.manufacturer = manufacturer;
 		this.model = model;
 		this.cc = cc;
 		this.numDoors = numDoors;
+		this.releaseDate=releaseDate;
+		this.year = year;
+		this.unavailable=unavailable;
 	}
 
 	public Long getId() {
@@ -78,11 +86,43 @@ public class Car {
 		this.numDoors = numDoors;
 	}
 
+	public Integer getYear() {
+		return year;
+	}
+
+	public void setYear(Integer year) {
+		this.year = year;
+	}
+
+	public LocalDate getReleaseDate() {
+		return releaseDate;
+	}
+
+	public void setReleaseDate(LocalDate releaseDate) {
+		this.releaseDate = releaseDate;
+	}
+	
+	
+
+	public Boolean getUnavailable() {
+		return unavailable;
+	}
+
+	public void setUnavailable(Boolean unavailable) {
+		this.unavailable = unavailable;
+	}
+
 	@Override
 	public String toString() {
 		return "Car [id=" + id + ", manufacturer=" + manufacturer + ", model=" + model + ", cc=" + cc + ", numDoors="
-				+ numDoors + "]";
+				+ numDoors + ", year=" + year + ", releaseDate=" + releaseDate + ", unavailable=" + unavailable + "]";
 	}
+
+
+	
+	
+
+
 	
 	
 	
