@@ -192,8 +192,8 @@ try {
 
 
 	@Override
-	public Long deleteAllByAvailableFalse() {
-		return this.carRepository.deleteAllByAvailableFalse();
+	public Long deleteAllByUnavailableFalse() {
+		return this.carRepository.deleteAllByUnavailableFalse();
 	}
 
 	

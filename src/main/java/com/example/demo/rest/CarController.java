@@ -78,17 +78,17 @@ public class CarController {
 		
 		
 		@PutMapping("/cars")
-		public ResponseEntity<Car> edit(@RequestBody Car car){
+		public ResponseEntity<Car> update(@RequestBody Car car){
 			log.info("REST request to edit a car");
 			if(car.getId()==null) {
 				log.warn("Se ha intentado editar sin una id");
 				return ResponseEntity.badRequest().build();
 			}
 			
-			car= this.carServ.save(car);
-			return ResponseEntity.ok(car);
+			return ResponseEntity.ok(this.carServ.save(car));
 			
 		}
+
 		
 		
 		@DeleteMapping("/cars/{id}")
@@ -148,5 +148,21 @@ public class CarController {
 			
 			return this.carServ.findByDoors(numDoors);
 		}
-}
+		
+		@GetMapping("/cars/manufacturer/{manufacturer}/model/{model}")
+		public List<Car> findByManufacturerAndModel(@PathVariable String manufacturer, @PathVariable String model){
+			
+			return this.carServ.findByManufacturerAndModel(manufacturer, model);
+		}
+		
+		
+		@GetMapping("/cars/doors-gte/{numDoors}")
+		//@ApiIgnore //No aparecer en la documentación.
+		@ApiOperation("Buscar coches por número de puertas") //Cambiar la documentación.
+		public List<Car> findByDoorsGreaterThan(@PathVariable Integer numDoors){
+			log.info("REST request to find cars by doors");
+			
+			return this.carServ.findByNumDoorsGreaterThan(numDoors);
+		}
 
+}

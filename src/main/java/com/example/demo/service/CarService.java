@@ -43,7 +43,7 @@ public interface CarService {
 	
 	public List<Car> findByUnavailableFalse();
 	
-	public Long deleteAllByAvailableFalse();
+	public Long deleteAllByUnavailableFalse();
 	
 	
 	
